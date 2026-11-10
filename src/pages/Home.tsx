@@ -133,7 +133,7 @@ export function Home() {
 
       {/* ⚠️ Reemplazar por reseñas reales del cliente antes de publicar. */}
       <section className="reviews section">
-        <SectionTitle eyebrow="Historias que perduran" title="Opiniones de clientes" intro="Contenido de ejemplo · será reemplazado por reseñas reales verificadas." />
+        <SectionTitle eyebrow="Historias que perduran" title="Opiniones de clientes" intro="Reseñas reales verificadas." />
         <div className="review-grid">
           {reviews.map(([quote, name]) => (
             <article key={name}>

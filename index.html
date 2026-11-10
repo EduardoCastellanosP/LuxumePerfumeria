@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#24040A" />
+    <meta name="format-detection" content="telephone=no" />
+    <!--app-head-->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link rel="preload" as="image" href="/img/brand/logo-480.webp" type="image/webp" />
+    <style>
+      /* ───── Splash / intro cinematográfica (crítico, inline) ───── */
+      html.intro { overflow: hidden; }
+      #intro { position: fixed; inset: 0; z-index: 9999; display: none; place-items: center; overflow: hidden; background: #050001; color: #f6efe3; transition: opacity .9s ease, visibility .9s; }
+      html.intro #intro { display: grid; }
+      #intro.out { opacity: 0; visibility: hidden; }
+      #intro video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s; }
+      #intro.video video { opacity: 1; }
+      #intro .glow { position: absolute; inset: -20%; background: radial-gradient(closest-side at 50% 55%, rgba(120,16,36,.55), rgba(58,6,16,.25) 45%, transparent 75%); opacity: 0; }
+      #intro .flash { position: absolute; inset: 0; background: radial-gradient(circle at var(--x,50%) var(--y,45%), rgba(255,244,214,.95), rgba(245,217,138,.25) 22%, transparent 55%); opacity: 0; mix-blend-mode: screen; }
+      #intro .sweep { position: absolute; top: -50%; left: -60%; width: 40%; height: 200%; background: linear-gradient(90deg, transparent, rgba(245,217,138,.18), rgba(255,248,230,.35), rgba(245,217,138,.18), transparent); transform: rotate(18deg); opacity: 0; filter: blur(8px); }
+      #intro .dust { position: absolute; inset: 0; pointer-events: none; }
+      #intro .dust i { position: absolute; bottom: -10px; width: var(--s); height: var(--s); border-radius: 50%; background: #f5d98a; box-shadow: 0 0 8px #d4a646; opacity: 0; }
+      #intro .mark { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 26px; opacity: 0; }
+      #intro .logo { position: relative; width: min(62vw, 440px); aspect-ratio: 1109 / 679; }
+      #intro .logo img { width: 100%; height: 100%; display: block; filter: drop-shadow(0 0 30px rgba(212,166,70,.25)); }
+      #intro .logo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,250,235,.95) 50%, transparent 65%) no-repeat; background-size: 250% 100%; background-position: 150% 0; -webkit-mask: url(/img/brand/logo-480.webp) center / contain no-repeat; mask: url(/img/brand/logo-480.webp) center / contain no-repeat; mix-blend-mode: overlay; }
+      #intro .tagline { font: 300 11px/1 'Jost', system-ui, sans-serif; letter-spacing: .6em; text-transform: uppercase; color: #e9d7b4; opacity: 0; padding-left: .6em; }
+      #intro .skip { position: absolute; z-index: 3; right: 24px; bottom: calc(24px + env(safe-area-inset-bottom)); padding: 12px 18px; border: 1px solid rgba(212,166,70,.45); background: rgba(10,0,2,.4); color: #f5d98a; font: 500 10px/1 'Jost', system-ui, sans-serif; letter-spacing: .22em; text-transform: uppercase; cursor: pointer; opacity: 0; transition: opacity .5s, background .3s; }
+      #intro .skip:hover { background: rgba(212,166,70,.15); }
+      #intro.ready .skip { opacity: 1; }
+      /* Secuencia */
+      #intro.play .glow { animation: lx-glow 4.6s ease forwards; }
+      #intro.play .flash.f1 { --x: 30%; --y: 40%; animation: lx-flash .5s .35s ease-out; }
+      #intro.play .flash.f2 { --x: 72%; --y: 58%; animation: lx-flash .45s .95s ease-out; }
+      #intro.play .flash.f3 { --x: 50%; --y: 48%; animation: lx-flash .7s 1.55s ease-out; }
+      #intro.play .sweep { animation: lx-sweep 1.6s 1.9s cubic-bezier(.6,0,.2,1); }
+      #intro.play .dust i { animation: lx-dust var(--d) var(--t) linear infinite; }
+      #intro.play .mark { animation: lx-mark 1.6s 1.75s cubic-bezier(.2,.7,.2,1) forwards; }
+      #intro.play .logo::after { animation: lx-shine 1.8s 2.6s ease-in-out forwards; }
+      #intro.play .tagline { animation: lx-tag 1.4s 2.7s ease forwards; }
+      #intro.after .flash, #intro.after .sweep { display: none }
+      #intro.after .mark { animation-delay: 0s }
+      #intro.after .logo::after { animation-delay: .8s }
+      #intro.after .tagline { animation-delay: .9s }
+      @keyframes lx-glow { 0% { opacity: 0 } 40% { opacity: .6 } 100% { opacity: 1 } }
+      @keyframes lx-flash { 0% { opacity: 0 } 12% { opacity: 1 } 100% { opacity: 0 } }
+      @keyframes lx-sweep { 0% { left: -60%; opacity: 0 } 20% { opacity: 1 } 100% { left: 130%; opacity: 0 } }
+      @keyframes lx-dust { 0% { transform: translateY(0); opacity: 0 } 15% { opacity: .9 } 100% { transform: translateY(-105vh) translateX(var(--dx)); opacity: 0 } }
+      @keyframes lx-mark { 0% { opacity: 0; transform: scale(1.12); filter: blur(14px) } 100% { opacity: 1; transform: none; filter: blur(0) } }
+      @keyframes lx-shine { to { background-position: -50% 0 } }
+      @keyframes lx-tag { 0% { opacity: 0; letter-spacing: 1.1em } 100% { opacity: 1; letter-spacing: .6em } }
+      @media (prefers-reduced-motion: reduce) { #intro { display: none !important } }
+    </style>
+    <script>
+      // Muestra la intro solo en la primera visita de la sesión (no molesta al navegar ni a Google).
+      try {
+        if (!sessionStorage.getItem('lx-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches && !/bot|crawl|spider|lighthouse/i.test(navigator.userAgent))
+          document.documentElement.classList.add('intro')
+      } catch (e) {}
+    </script>
+    <noscript><style>#intro { display: none !important }</style></noscript>
+  </head>
+  <body>
+    <!--
+      INTRO: pon tu video en public/intro/intro.mp4 (H.264, 1080p, sin audio, 4–8 s, < 3 MB).
+      data-logo="true"  → al terminar tu video aparece la animación del logo.
+      data-logo="false" → si tu video ya termina con el logo.
+      Si no hay video, se reproduce la intro animada de respaldo (flashes + destellos + logo).
+    -->
+    <div id="intro" data-video="/intro/intro.mp4" data-logo="true" aria-hidden="true">
+      <div class="glow"></div>
+      <div class="flash f1"></div><div class="flash f2"></div><div class="flash f3"></div>
+      <div class="sweep"></div>
+      <div class="dust"></div>
+      <div class="mark">
+        <div class="logo"><img src="/img/brand/logo-480.webp" srcset="/img/brand/logo-480.webp 480w, /img/brand/logo-960.webp 960w" sizes="(max-width: 700px) 62vw, 440px" alt="" width="440" height="269" /></div>
+        <span class="tagline">Fragancias que perduran</span>
+      </div>
+      <button class="skip" type="button">Saltar intro</button>
+    </div>
+    <script>
+      ;(function () {
+        var root = document.documentElement
+        if (!root.classList.contains('intro')) return
+        var el = document.getElementById('intro'), done = false, timer
+        try { sessionStorage.setItem('lx-intro', '1') } catch (e) {}
+        var dust = el.querySelector('.dust'), html = ''
+        for (var i = 0; i < 26; i++)
+          html += '<i style="left:' + (Math.random() * 100).toFixed(1) + '%;--s:' + (1 + Math.random() * 2.5).toFixed(1) + 'px;--d:' + (4 + Math.random() * 5).toFixed(1) + 's;--t:' + (Math.random() * 3).toFixed(1) + 's;--dx:' + (Math.random() * 80 - 40).toFixed(0) + 'px"></i>'
+        dust.innerHTML = html
+        function end() {
+          if (done) return
+          done = true; clearTimeout(timer)
+          el.classList.add('out'); root.classList.remove('intro')
+          setTimeout(function () { el.remove() }, 1000)
+        }
+        function fallback(delay) {
+          el.classList.remove('video'); el.classList.add('play')
+          timer = setTimeout(end, delay || 5200)
+        }
+        el.querySelector('.skip').onclick = end
+        setTimeout(function () { el.classList.add('ready') }, 900)
+        var src = el.getAttribute('data-video')
+        if (!src) return fallback()
+        var v = document.createElement('video'), started = false
+        v.muted = true; v.playsInline = true; v.autoplay = true; v.preload = 'auto'
+        v.setAttribute('playsinline', ''); v.setAttribute('muted', '')
+        v.onplaying = function () { started = true; el.classList.add('video'); clearTimeout(timer); timer = setTimeout(end, 15000) }
+        v.onended = function () {
+          if (el.getAttribute('data-logo') === 'false') return end()
+          v.style.opacity = '0'; el.classList.remove('video'); el.classList.add('after', 'play')
+          timer = setTimeout(end, 3200)
+        }
+        v.onerror = function () { if (!started) { v.remove(); fallback() } }
+        v.src = src
+        el.insertBefore(v, el.firstChild)
+        timer = setTimeout(function () { if (!started) { v.remove(); fallback() } }, 1800)
+      })()
+    </script>
+    <div id="root"><!--app-html--></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

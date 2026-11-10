@@ -140,8 +140,7 @@ export function Home() {
               <span aria-label="5 de 5 estrellas">★★★★★</span>
               <p>{quote}</p>
               <b>{name}</b>
-              <small>Reseña de ejemplo</small>
-            </article>
+             </article>
           ))}
         </div>
       </section>

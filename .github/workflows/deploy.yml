@@ -1,0 +1,53 @@
+name: Actualizar y publicar LUXUME
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '7 * * * *'   # cada hora revisa la hoja de Google
+  workflow_dispatch:       # botón "Run workflow" para publicar ya
+permissions:
+  contents: write
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Leer la hoja de Google y optimizar fotos nuevas
+        id: sync
+        if: vars.SHEET_CSV_URL != ''
+        continue-on-error: true
+        run: node scripts/sync-sheet.mjs
+        env:
+          SHEET_CSV_URL: ${{ vars.SHEET_CSV_URL }}
+
+      - name: Guardar cambios del catálogo en el repositorio
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          git config user.name "luxume-bot"
+          git config user.email "luxume-bot@users.noreply.github.com"
+          git add src/data public/img/perfumes
+          git commit -m "Catálogo actualizado desde Google Sheets"
+          git push
+
+      - name: Construir la web
+        if: github.event_name != 'schedule' || steps.sync.outputs.changed == 'true'
+        run: npm run build
+
+      - name: Subir a Spaceship
+        if: github.event_name != 'schedule' || steps.sync.outputs.changed == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ./

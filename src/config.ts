@@ -4,7 +4,7 @@ export const SITE = {
   shortName: 'LUXUME',
   slogan: 'Fragancias que perduran',
   /** Dominio final, sin "/" al final (se usa para SEO, sitemap y enlaces para compartir). */
-  url: 'https://luxume.com.co',
+  url: 'https://luxumeperfumeria.com',
   /** WhatsApp en formato internacional, solo números: 57 + celular. */
   whatsapp: '573127613044',
   email: 'luxumeperfumeria@gmail.com',

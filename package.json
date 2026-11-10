@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist-server && node scripts/prerender.mjs",
     "preview": "vite preview --port 4173",
-    "images": "node scripts/optimize-images.mjs"
+    "images": "node scripts/optimize-images.mjs",
+    "sync": "node scripts/sync-sheet.mjs",
+    "sheet:export": "node scripts/export-sheet.mjs"
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "^5.3.0",

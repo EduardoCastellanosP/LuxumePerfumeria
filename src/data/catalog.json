@@ -1943,5 +1943,31 @@
    "perfumes/ana-al-awwal-1",
    "perfumes/ana-al-awwal-2"
   ]
+ },
+ {
+  "slug": "arruru",
+  "name": "eduardo-chevere",
+  "brand": "astrea",
+  "type": "ORIGINAL",
+  "gender": "Unisex",
+  "line": "Árabe",
+  "family": "Sabroso de colombia",
+  "groups": [],
+  "occasions": [],
+  "season": "pa todos los climas",
+  "short": "Oirigianl arruru",
+  "description": "dfdgfdggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+  "notes": {
+   "main": ""
+  },
+  "sizes": [
+   {
+    "ml": 50,
+    "price": 150000
+   }
+  ],
+  "images": [
+   "perfumes/arruru-37109c"
+  ]
  }
 ]
